@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Art Gallery</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
         body {
             background-color: #121212;
@@ -64,11 +65,11 @@
             flex-grow: 1;
         }
 
-        section div {
+        section > div {
             transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
-        section div:hover {
+        section > div:hover {
             transform: scale(1.05);
             background-color: #2a2a2a;
         }
@@ -85,6 +86,24 @@
         #feedback h2 {
             text-align: center;
             margin-top: 0;
+        }
+
+        #feedback h2 .material-icons {
+            font-size: 28px;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        .form-icon.material-icons {
+            font-size: 18px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .submit-btn .material-icons {
+            font-size: 20px;
+            vertical-align: middle;
+            margin-right: 6px;
         }
 
         .form-group {
@@ -150,60 +169,179 @@
             bottom: 0;
             width: 100%;
         }
+
+        footer .material-icons {
+            font-size: 18px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        /* Material Icons in nav */
+        nav a .material-icons {
+            font-size: 20px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        /* Gallery grid and cards - CSS controls layout and look */
+        .gallery-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px;
+        }
+
+        .art-card {
+            background-color: #1e1e1e;
+            padding: 0;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+            overflow: hidden;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .art-card:hover {
+            transform: scale(1.05);
+            background-color: #2a2a2a;
+            box-shadow: 0 8px 24px rgba(255, 64, 129, 0.2);
+        }
+
+        .art-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .art-card .card-content {
+            padding: 15px 20px;
+        }
+
+        .art-card h3 {
+            margin: 0 0 8px 0;
+        }
+
+        .art-card p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .section-heading {
+            text-align: center;
+        }
+
+        .section-intro {
+            text-align: center;
+        }
+
+        .feedback-intro {
+            text-align: center;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-
+    <!--
+    HTML vs CSS usage in this page:
+    - HTML: structure (header, nav, main, section, footer, form, divs, img, labels, inputs, buttons), content (text, links, icons via <i class="material-icons">), semantics (id, class, for, name, alt).
+    - CSS (in <style>): all visual styling - colors, layout (flex, grid), spacing, typography, hover/focus states, borders, backgrounds, transitions. No inline style on gallery cards; classes like .art-card, .gallery-section, .form-group control appearance.
+    -->
     <!-- Header Section -->
     <header>
         <div class="logo">فن</div>
         <nav>
-            <a href="#">Home</a>
-            <a href="#">Gallery</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-            <a href="#feedback">Feedback</a>
+            <a href="#"><i class="material-icons">home</i> Home</a>
+            <a href="#"><i class="material-icons">collections</i> Gallery</a>
+            <a href="#"><i class="material-icons">info</i> About</a>
+            <a href="#"><i class="material-icons">mail</i> Contact</a>
+            <a href="#feedback"><i class="material-icons">rate_review</i> Feedback</a>
         </nav>
     </header>
 
     <!-- Main Content Section -->
     <main>
         <section>
-            <h2 style="text-align: center;">Featured Artworks</h2>
-            <p style="text-align: center;">Explore a collection of stunning artworks from talented artists around the world.</p>
+            <h2 class="section-heading">Featured Artworks</h2>
+            <p class="section-intro">Explore a collection of stunning artworks from talented artists around the world.</p>
         </section>
 
-        <!-- Responsive Design Example -->
-        <section style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 20px;">
-            <div style="background-color: #1e1e1e; padding: 20px; border-radius: 8px; width: 300px; text-align: center;">
-                <h3>Artwork 1</h3>
-                <p>A beautiful painting of nature.</p>
+        <!-- Gallery grid: layout and card style from CSS -->
+        <section class="gallery-section">
+            <div class="art-card">
+                <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=400&q=80" alt="Landscape with mountains and sky">
+                <div class="card-content">
+                    <h3>Mountain Landscape</h3>
+                    <p>A serene painting of nature and distant peaks.</p>
+                </div>
             </div>
-            <div style="background-color: #1e1e1e; padding: 20px; border-radius: 8px; width: 300px; text-align: center;">
-                <h3>Artwork 2</h3>
-                <p>An abstract masterpiece.</p>
+            <div class="art-card">
+                <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&q=80" alt="Abstract art with colors">
+                <div class="card-content">
+                    <h3>Abstract Composition</h3>
+                    <p>An abstract masterpiece in bold colors.</p>
+                </div>
             </div>
-            <div style="background-color: #1e1e1e; padding: 20px; border-radius: 8px; width: 300px; text-align: center;">
-                <h3>Artwork 3</h3>
-                <p>A vibrant cityscape.</p>
+            <div class="art-card">
+                <img src="https://images.unsplash.com/photo-1514565131-fce0801e5785?w=400&q=80" alt="City skyline at night">
+                <div class="card-content">
+                    <h3>Cityscape at Dusk</h3>
+                    <p>A vibrant urban skyline.</p>
+                </div>
+            </div>
+            <div class="art-card">
+                <img src="https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=400&q=80" alt="Colorful art supplies">
+                <div class="card-content">
+                    <h3>Art Supplies</h3>
+                    <p>Still life with brushes and pigments.</p>
+                </div>
+            </div>
+            <div class="art-card">
+                <img src="https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=400&q=80" alt="Modern abstract painting">
+                <div class="card-content">
+                    <h3>Modern Abstract</h3>
+                    <p>Contemporary abstract expressionism.</p>
+                </div>
+            </div>
+            <div class="art-card">
+                <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80" alt="Classical style painting">
+                <div class="card-content">
+                    <h3>Classical Still Life</h3>
+                    <p>Traditional still life with fruit and vase.</p>
+                </div>
+            </div>
+            <div class="art-card">
+                <img src="https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=400&q=80" alt="Street art mural">
+                <div class="card-content">
+                    <h3>Street Art Mural</h3>
+                    <p>Bold mural art from the city walls.</p>
+                </div>
+            </div>
+            <div class="art-card">
+                <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=400&q=80" alt="Digital art illustration">
+                <div class="card-content">
+                    <h3>Digital Illustration</h3>
+                    <p>Contemporary digital art and design.</p>
+                </div>
             </div>
         </section>
 
         <!-- Feedback Form Section -->
         <section id="feedback">
-            <h2>Feedback</h2>
-            <p style="text-align: center; margin-bottom: 20px;">We'd love to hear from you. Share your thoughts about the gallery.</p>
+            <h2><i class="material-icons">rate_review</i> Feedback</h2>
+            <p class="feedback-intro">We'd love to hear from you. Share your thoughts about the gallery.</p>
             <form class="feedback-form" action="#" method="get">
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name"><i class="material-icons form-icon">person</i> Name</label>
                     <input type="text" id="name" name="name" placeholder="Your name" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email"><i class="material-icons form-icon">email</i> Email</label>
                     <input type="email" id="email" name="email" placeholder="your@email.com" required>
                 </div>
                 <div class="form-group">
-                    <label for="rating">How was your visit?</label>
+                    <label for="rating"><i class="material-icons form-icon">star</i> How was your visit?</label>
                     <select id="rating" name="rating">
                         <option value="">Select a rating</option>
                         <option value="5">Excellent</option>
@@ -214,17 +352,17 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="message">Message</label>
+                    <label for="message"><i class="material-icons form-icon">message</i> Message</label>
                     <textarea id="message" name="message" placeholder="Your feedback or suggestions..."></textarea>
                 </div>
-                <button type="submit" class="submit-btn">Submit Feedback</button>
+                <button type="submit" class="submit-btn"><i class="material-icons">send</i> Submit Feedback</button>
             </form>
         </section>
     </main>
 
     <!-- Footer Section -->
     <footer>
-        <p>&copy; 2026 Art Gallery. All rights reserved.</p>
+        <p><i class="material-icons">copyright</i> 2026 Art Gallery. All rights reserved.</p>
     </footer>
 
 </body>
