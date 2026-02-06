@@ -1,0 +1,19 @@
+Design an art gallery web page   ( each point 2 marks)
+1.⁠ ⁠HTML5  (Semantic Elements in HTML)
+https://www.w3schools.com/html/html5_semantic_elements.asp
+2.⁠ ⁠Type Selector  ID & Class
+3.⁠ ⁠Navigation Bar & pseudo classes 
+https://www.w3schools.com/css/css_pseudo_classes.asp
+4.⁠ ⁠External Css file 
+5- Change Background Color / Image , color and font 
+7- Creativity 
+8-  Responsive web design 
+Media Query 
+https://www.w3schools.com/css/tryit.asp?filename=tryresponsive_col-s
+9-CSS
+neat typography: web fonts
+10- Neat
+CSS icons:
+
+•  google icons    https://www.w3schools.com/icons/google_icons_intro.asp
+•  fontawesome     https://www.w3schools.com/icons/fontawesome_icons_intro.asp

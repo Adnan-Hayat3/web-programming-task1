@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing Box Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+        #toggleButton {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <button id="toggleButton">Pause</button>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const toggleButton = document.getElementById('toggleButton');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let box = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            size: 30,
+            dx: 2,
+            dy: 2
+        };
+
+        let speed = 2;
+        let isRunning = true;
+
+        function drawBox() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(box.x, box.y, box.size, box.size);
+        }
+
+        function updateBox() {
+            box.x += box.dx;
+            box.y += box.dy;
+
+            if (box.x <= 0 || box.x + box.size >= canvas.width) {
+                box.dx *= -1;
+            }
+
+            if (box.y <= 0 || box.y + box.size >= canvas.height) {
+                box.dy *= -1;
+            }
+        }
+
+        function changeDirection(e) {
+            if (e.key === 'ArrowUp') {
+                box.dy = -speed;
+                box.dx = 0;
+            } else if (e.key === 'ArrowDown') {
+                box.dy = speed;
+                box.dx = 0;
+            } else if (e.key === 'ArrowLeft') {
+                box.dx = -speed;
+                box.dy = 0;
+            } else if (e.key === 'ArrowRight') {
+                box.dx = speed;
+                box.dy = 0;
+            } else if (e.key === 'i') {
+                speed++;
+                box.dx = box.dx > 0 ? speed : -speed;
+                box.dy = box.dy > 0 ? speed : -speed;
+            } else if (e.key === 'o') {
+                speed = Math.max(1, speed - 1);
+                box.dx = box.dx > 0 ? speed : -speed;
+                box.dy = box.dy > 0 ? speed : -speed;
+            }
+        }
+
+        window.addEventListener('keydown', changeDirection);
+
+        toggleButton.addEventListener('click', () => {
+            isRunning = !isRunning;
+            toggleButton.textContent = isRunning ? 'Pause' : 'Resume';
+        });
+
+        function gameLoop() {
+            if (isRunning) {
+                updateBox();
+                drawBox();
+            }
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>
