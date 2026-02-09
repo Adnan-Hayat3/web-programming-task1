@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Div Archery Game</title>
+
+<style>
+  body {
+    margin: 0;
+    background: url('https://i.imgur.com/3e7ZK8P.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: Arial;
+  }
+
+  #score {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    background: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+  }
+
+  #timer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    background: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+  }
+
+  #gameArea {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    overflow: hidden;
+  }
+
+  /* Bow */
+  #bow {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    font-size: 50px;
+    transform: translateY(-50%);
+  }
+
+  /* Arrow */
+  #arrow {
+    position: absolute;
+    left: 80px;
+    top: 50%;
+    width: 60px;
+    height: 4px;
+    background: brown;
+    display: none;
+  }
+
+  /* Target */
+  #target {
+    position: absolute;
+    right: 50px;
+    top: 100px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: red;
+  }
+
+  #restartButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    font-size: 20px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    display: none;
+    cursor: pointer;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="score">Score: 0</div>
+<div id="timer">Time: 30</div>
+<button id="restartButton">Restart Game</button>
+
+<div id="gameArea">
+  <div id="bow">🏹</div>
+  <div id="arrow"></div>
+  <div id="target"></div>
+</div>
+
+<script>
+  const arrow = document.getElementById("arrow");
+  const target = document.getElementById("target");
+  const scoreDisplay = document.getElementById("score");
+  const timerDisplay = document.getElementById("timer");
+  const bow = document.getElementById("bow");
+  const restartButton = document.getElementById("restartButton");
+
+  let score = 0;
+  let timeLeft = 30;
+  let arrowMoving = false;
+  let targetDirection = 1;
+  let gameOver = false;
+
+  /* Move target continuously */
+  function moveTarget() {
+    if (gameOver) return;
+
+    let top = target.offsetTop;
+    if (top <= 0 || top >= window.innerHeight - 120) {
+      targetDirection *= -1;
+    }
+    target.style.top = top + (5 * targetDirection) + "px";
+  }
+
+  setInterval(moveTarget, 50);
+
+  /* Timer countdown */
+  function startTimer() {
+    const timerInterval = setInterval(() => {
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        gameOver = true;
+        endGame();
+      } else {
+        timeLeft--;
+        timerDisplay.textContent = "Time: " + timeLeft;
+      }
+    }, 1000);
+  }
+
+  /* End game */
+  function endGame() {
+    alert("Game Over! Your score: " + score);
+    restartButton.style.display = "block";
+  }
+
+  /* Restart game */
+  restartButton.addEventListener("click", () => {
+    score = 0;
+    timeLeft = 30;
+    gameOver = false;
+    scoreDisplay.textContent = "Score: 0";
+    timerDisplay.textContent = "Time: 30";
+    restartButton.style.display = "none";
+    startTimer();
+  });
+
+  /* Move bow with cursor */
+  document.addEventListener("mousemove", (e) => {
+    const bowHeight = bow.offsetHeight;
+    let bowY = e.clientY - bowHeight / 2;
+
+    if (bowY < 0) bowY = 0;
+    if (bowY > window.innerHeight - bowHeight) bowY = window.innerHeight - bowHeight;
+
+    bow.style.top = bowY + "px";
+  });
+
+  /* Shoot arrow on click */
+  document.addEventListener("click", () => {
+    if (arrowMoving || gameOver) return;
+
+    arrowMoving = true;
+    arrow.style.display = "block";
+    arrow.style.left = "80px";
+    arrow.style.top = bow.offsetTop + 25 + "px";
+
+    let arrowInterval = setInterval(() => {
+      let arrowLeft = arrow.offsetLeft;
+      arrow.style.left = arrowLeft + 15 + "px";
+
+      /* Collision detection */
+      if (
+        arrow.offsetLeft + arrow.offsetWidth >= target.offsetLeft &&
+        arrow.offsetTop >= target.offsetTop &&
+        arrow.offsetTop <= target.offsetTop + target.offsetHeight
+      ) {
+        updateScore();
+        resetArrow();
+        clearInterval(arrowInterval);
+      }
+
+      /* Arrow out of screen */
+      if (arrowLeft > window.innerWidth) {
+        resetArrow();
+        clearInterval(arrowInterval);
+      }
+    }, 20);
+  });
+
+  /* Update score */
+  function updateScore() {
+    score++;
+    scoreDisplay.textContent = "Score: " + score;
+
+    if (score % 5 === 0) {
+      increaseDifficulty();
+    }
+  }
+
+  /* Increase difficulty */
+  function increaseDifficulty() {
+    const currentSpeed = Math.abs(targetDirection);
+    targetDirection = targetDirection > 0 ? currentSpeed + 1 : -(currentSpeed + 1);
+  }
+
+  /* Reset arrow */
+  function resetArrow() {
+    arrowMoving = false;
+    arrow.style.display = "none";
+  }
+
+  /* Start the game */
+  startTimer();
+</script>
+
+</body>
+</html>
