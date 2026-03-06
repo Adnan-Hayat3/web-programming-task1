@@ -1,10 +1,7 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const User = require('../User');
 
 const router = express.Router();
-
-// Reuse the already-registered Mongoose model
-const User = mongoose.model('User');
 
 function ensureAuthenticated(req, res, next) {
   if (req.session && req.session.user) {
@@ -22,17 +19,17 @@ router.post('/register', async (req, res) => {
       return res.status(400).send('username and password are required');
     }
 
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(400).send('User already exists');
-    }
-
-    const user = new User({ username, password });
-    await user.save();
+    const user = new User(username, password);
+    await user.register();
 
     res.send('User registered successfully');
   } catch (error) {
     console.error('Error in /register:', error);
+
+    if (error.code === 'USER_EXISTS') {
+      return res.status(400).send('User already exists');
+    }
+
     res.status(500).send('Failed to register user');
   }
 });
@@ -46,15 +43,18 @@ router.post('/login', async (req, res) => {
       return res.status(400).send('username and password are required');
     }
 
-    const user = await User.findOne({ username });
-    if (!user || user.password !== password) {
-      return res.status(401).send('Invalid username or password');
-    }
+    const user = new User(username, password);
+    await user.login();
 
     req.session.user = username;
     res.send('Login successful');
   } catch (error) {
     console.error('Error in /login:', error);
+
+    if (error.code === 'INVALID_CREDENTIALS') {
+      return res.status(401).send('Invalid username or password');
+    }
+
     res.status(500).send('Failed to login');
   }
 });
